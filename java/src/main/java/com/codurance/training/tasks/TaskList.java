@@ -1,5 +1,9 @@
 package com.codurance.training.tasks;
 
+import com.codurance.training.tasks.service.AddService;
+import com.codurance.training.tasks.service.Impl.*;
+import com.codurance.training.tasks.service.TodayDueTaskService;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,8 +19,11 @@ public final class TaskList implements Runnable {
     private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private final BufferedReader in;
     private final PrintWriter out;
-
-    private long lastId = 0;
+    private AddServiceImpl addService;
+    private CheckServiceImpl checkService;
+    private DeleteServiceImpl deleteService;
+    private ViewServiceImpl viewService;
+    private TodayDueTaskServiceImpl todayDueTaskService;
 
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -27,6 +34,11 @@ public final class TaskList implements Runnable {
     public TaskList(BufferedReader reader, PrintWriter writer) {
         this.in = reader;
         this.out = writer;
+        addService = new AddServiceImpl(this.out, tasks);
+        checkService = new CheckServiceImpl(tasks, this.out);
+        deleteService = new DeleteServiceImpl(tasks, this.out);
+        viewService = new ViewServiceImpl(tasks,this.out);
+        todayDueTaskService = new TodayDueTaskServiceImpl(tasks, this.out);
     }
 
     public void run() {
@@ -54,14 +66,31 @@ public final class TaskList implements Runnable {
                 show();
                 break;
             case "add":
-                add(commandRest[1]);
+                addService.add(commandRest[1]);
                 break;
             case "check":
-                check(commandRest[1]);
+                checkService.check(commandRest[1]);
                 break;
             case "uncheck":
-                uncheck(commandRest[1]);
+                checkService.uncheck(commandRest[1]);
                 break;
+            case "todays due tasks":
+                todayDueTaskService.showDueTasksToday();
+            case "delete":
+                deleteService.deleteTask(commandRest[1]);
+            case "view":
+                String viewBy = commandRest[1];
+                switch (viewBy) {
+                    case "by date":
+                        viewService.viewByDate();
+                        break;
+                    case "by deadline":
+                        viewService.viewByDeadline();
+                        break;
+                    case "by project":
+                        viewService.viewByProject();
+                        break;
+                }
             case "help":
                 help();
                 break;
@@ -81,53 +110,6 @@ public final class TaskList implements Runnable {
         }
     }
 
-    private void add(String commandLine) {
-        String[] subcommandRest = commandLine.split(" ", 2);
-        String subcommand = subcommandRest[0];
-        if (subcommand.equals("project")) {
-            addProject(subcommandRest[1]);
-        } else if (subcommand.equals("task")) {
-            String[] projectTask = subcommandRest[1].split(" ", 2);
-            addTask(projectTask[0], projectTask[1]);
-        }
-    }
-
-    private void addProject(String name) {
-        tasks.put(name, new ArrayList<Task>());
-    }
-
-    private void addTask(String project, String description) {
-        List<Task> projectTasks = tasks.get(project);
-        if (projectTasks == null) {
-            out.printf("Could not find a project with the name \"%s\".", project);
-            out.println();
-            return;
-        }
-        projectTasks.add(new Task(nextId(), description, false));
-    }
-
-    private void check(String idString) {
-        setDone(idString, true);
-    }
-
-    private void uncheck(String idString) {
-        setDone(idString, false);
-    }
-
-    private void setDone(String idString, boolean done) {
-        int id = Integer.parseInt(idString);
-        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
-            for (Task task : project.getValue()) {
-                if (task.getId() == id) {
-                    task.setDone(done);
-                    return;
-                }
-            }
-        }
-        out.printf("Could not find a task with an ID of %d.", id);
-        out.println();
-    }
-
     private void help() {
         out.println("Commands:");
         out.println("  show");
@@ -143,7 +125,4 @@ public final class TaskList implements Runnable {
         out.println();
     }
 
-    private long nextId() {
-        return ++lastId;
-    }
 }
