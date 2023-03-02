@@ -1,8 +1,7 @@
 package com.codurance.training.tasks;
 
-import com.codurance.training.tasks.service.AddService;
+import com.codurance.training.tasks.service.*;
 import com.codurance.training.tasks.service.Impl.*;
-import com.codurance.training.tasks.service.TodayDueTaskService;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -17,11 +16,11 @@ public final class TaskList implements Runnable {
     private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private final BufferedReader in;
     private final PrintWriter out;
-    private AddServiceImpl addService;
-    private final CheckServiceImpl checkService;
-    private final DeleteServiceImpl deleteService;
-    private final ViewServiceImpl viewService;
-    private final TodayDueTaskServiceImpl todayDueTaskService;
+    private final AddService addService;
+    private final CheckService checkService;
+    private final DeleteService deleteService;
+    private final ViewService viewService;
+    private final TodayDueTaskService todayDueTaskService;
 
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
