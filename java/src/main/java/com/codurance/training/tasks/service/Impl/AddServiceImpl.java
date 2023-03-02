@@ -9,19 +9,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class AddServiceImpl implements AddService {
-    private String id;
-    private Date date;
-    private Date today;
-//    @Override
-//    public void addDeadline(String id) {
-//        this.id = id;
-//
-//    }
-//
-//    @Override
-//    public List<Task> todayTasks() {
-//        return null;
-//    }
     private  Map<String, List<Task>> tasks = new LinkedHashMap<>();
     private  PrintWriter out;
 

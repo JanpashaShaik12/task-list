@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class DeleteServiceImpl implements DeleteService {
-    private Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private Map<String, List<Task>> tasks ;
     private  PrintWriter out;
     public DeleteServiceImpl(Map<String, List<Task>> tasks, PrintWriter out) {
         this.out = out;

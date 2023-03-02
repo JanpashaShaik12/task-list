@@ -1,5 +1,6 @@
 package com.codurance.training.tasks.service.Impl;
 
+import com.codurance.training.tasks.Common;
 import com.codurance.training.tasks.Task;
 import com.codurance.training.tasks.service.DeadlineService;
 
@@ -12,27 +13,33 @@ import java.util.List;
 import java.util.Map;
 
 public class DeadlineServiceImpl  implements DeadlineService {
-    private Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private Map<String, List<Task>> tasks;
     private PrintWriter out;
 
+    public DeadlineServiceImpl(Map<String, List<Task>> tasks, PrintWriter out) {
+        this.tasks = tasks;
+        this.out = out;
+    }
+
     @Override
-    public void addDeadline(String taskId, String  deadline) {
-        Date date= null;
+    public void addDeadline(String taskId, String deadline) {
+        Date date=null;
         try {
             date = new SimpleDateFormat("dd-MM-yyyy").parse(deadline);
-        }
-        catch (ParseException exc){
-            exc.printStackTrace();
-        }
-        for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
-            for(Task task: project.getValue()) {
-                if(task.getId().equals(taskId)) {
-                    task.setDeadline(date);
+            for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
+                for(Task task: project.getValue()) {
+                    if(task.getId().equals(taskId)) {
+                        task.setDeadline(date);
+                    }
                 }
             }
+            out.printf("There is no task with the id provided");
+            out.println();
         }
-        out.printf("There is no task with the id provided");
-        out.println();
+        catch (ParseException e) {
+            e.printStackTrace();
+        }
+
 
     }
 }

@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Map;
 
 public class CheckServiceImpl implements CheckService {
-    private  Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private  Map<String, List<Task>> tasks ;
     private PrintWriter out;
 
     public CheckServiceImpl(Map<String, List<Task>> tasks, PrintWriter out) {

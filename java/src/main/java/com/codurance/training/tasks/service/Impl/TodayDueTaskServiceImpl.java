@@ -1,5 +1,6 @@
 package com.codurance.training.tasks.service.Impl;
 
+import com.codurance.training.tasks.Common;
 import com.codurance.training.tasks.Task;
 import com.codurance.training.tasks.service.TodayDueTaskService;
 
@@ -17,21 +18,17 @@ public class TodayDueTaskServiceImpl implements TodayDueTaskService {
         this.tasks = tasks;
         this.out = out;
     }
-
     @Override
     public void showDueTasksToday() {
         Date today = new Date();
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             out.println(project.getKey());
             for (Task task : project.getValue()) {
-                if(task.getDeadline() != null && parseDate(task.getDeadline()).equals(parseDate(today)))
+                if(task.getDeadline() != null && Common.parseDate(task.getDeadline()).equals(Common.parseDate(today)))
                     out.printf("    [%c] %s: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
             }
             out.println();
         }
     }
-    private String parseDate(Date date) {
-        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-        return formatter.format(date);
-    }
+
 }

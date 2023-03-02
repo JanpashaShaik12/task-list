@@ -8,10 +8,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 public final class TaskList implements Runnable {
     private static final String QUIT = "quit";
@@ -20,10 +18,10 @@ public final class TaskList implements Runnable {
     private final BufferedReader in;
     private final PrintWriter out;
     private AddServiceImpl addService;
-    private CheckServiceImpl checkService;
-    private DeleteServiceImpl deleteService;
-    private ViewServiceImpl viewService;
-    private TodayDueTaskServiceImpl todayDueTaskService;
+    private final CheckServiceImpl checkService;
+    private final DeleteServiceImpl deleteService;
+    private final ViewServiceImpl viewService;
+    private final TodayDueTaskServiceImpl todayDueTaskService;
 
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
@@ -74,20 +72,20 @@ public final class TaskList implements Runnable {
             case "uncheck":
                 checkService.uncheck(commandRest[1]);
                 break;
-            case "todays due tasks":
+            case "todaysDueTasks":
                 todayDueTaskService.showDueTasksToday();
             case "delete":
                 deleteService.deleteTask(commandRest[1]);
             case "view":
                 String viewBy = commandRest[1];
                 switch (viewBy) {
-                    case "by date":
+                    case "byDate":
                         viewService.viewByDate();
                         break;
-                    case "by deadline":
+                    case "byDeadline":
                         viewService.viewByDeadline();
                         break;
-                    case "by project":
+                    case "byProject":
                         viewService.viewByProject();
                         break;
                 }
@@ -119,6 +117,7 @@ public final class TaskList implements Runnable {
         out.println("  uncheck <task ID>");
         out.println();
     }
+
 
     private void error(String command) {
         out.printf("I don't know what the command \"%s\" is.", command);
