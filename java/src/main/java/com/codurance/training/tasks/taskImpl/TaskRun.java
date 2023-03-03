@@ -2,21 +2,20 @@ package com.codurance.training.tasks.taskImpl;
 
 import com.codurance.training.tasks.Task;
 import com.codurance.training.tasks.TaskExecutor;
-import com.codurance.training.tasks.TaskRun;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 import java.util.Map;
 
-public class TaskRunImpl  implements TaskRun, Runnable {
+public class TaskRun  implements Runnable {
     private static final String QUIT = "quit";
     private final Map<String, List<Task>> tasks;
     private final PrintWriter out;
     private final BufferedReader in;
     private final TaskExecutor taskExecutor;
 
-    public TaskRunImpl(PrintWriter out, BufferedReader in, Map<String, List<Task>> tasks) {
+    public TaskRun(PrintWriter out, BufferedReader in, Map<String, List<Task>> tasks) {
         this.tasks = tasks;
         this.out = out;
         this.in = in;

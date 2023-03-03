@@ -1,6 +1,6 @@
 package com.codurance.training.tasks;
 
-import com.codurance.training.tasks.taskImpl.TaskRunImpl;
+import com.codurance.training.tasks.taskImpl.TaskRun;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -20,7 +20,7 @@ public final class TaskList  {
     public TaskList(BufferedReader reader, PrintWriter writer) {
         this.in = reader;
         this.out = writer;
-        new TaskRunImpl(this.out,this.in, tasks).run();
+        new TaskRun(this.out,this.in, tasks).run();
     }
 
 }
