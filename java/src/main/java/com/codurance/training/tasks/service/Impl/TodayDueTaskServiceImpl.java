@@ -1,11 +1,10 @@
 package com.codurance.training.tasks.service.Impl;
 
-import com.codurance.training.tasks.Common;
+import com.codurance.training.tasks.TaskListUtil;
 import com.codurance.training.tasks.Task;
 import com.codurance.training.tasks.service.TodayDueTaskService;
 
 import java.io.PrintWriter;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -24,7 +23,7 @@ public class TodayDueTaskServiceImpl implements TodayDueTaskService {
         for (Map.Entry<String, List<Task>> project : tasks.entrySet()) {
             out.println(project.getKey());
             for (Task task : project.getValue()) {
-                if(task.getDeadline() != null && Common.parseDate(task.getDeadline()).equals(Common.parseDate(today)))
+                if(task.getDeadline() != null && TaskListUtil.parseDate(task.getDeadline()).equals(TaskListUtil.parseDate(today)))
                     out.printf("    [%c] %s: %s%n", (task.isDone() ? 'x' : ' '), task.getId(), task.getDescription());
             }
             out.println();

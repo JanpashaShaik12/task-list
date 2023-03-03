@@ -1,6 +1,5 @@
 package com.codurance.training.tasks.service.Impl;
 
-import com.codurance.training.tasks.Common;
 import com.codurance.training.tasks.Task;
 import com.codurance.training.tasks.service.DeadlineService;
 
@@ -8,7 +7,6 @@ import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
