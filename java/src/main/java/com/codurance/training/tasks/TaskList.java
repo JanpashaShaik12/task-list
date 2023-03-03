@@ -8,19 +8,20 @@ import java.io.PrintWriter;
 import java.util.*;
 
 public final class TaskList  {
-    private static final String QUIT = "quit";
-    private final Map<String, List<Task>> tasks = new LinkedHashMap<>();
+    private final Map<String, List<Task>> tasks;
     private final BufferedReader in;
     private final PrintWriter out;
     public static void main(String[] args) throws Exception {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter out = new PrintWriter(System.out);
-        new TaskList(in, out);
+        Map<String, List<Task>> tasks = new HashMap<>();
+        new TaskList(tasks, in, out);
     }
-    public TaskList(BufferedReader reader, PrintWriter writer) {
+    public TaskList(Map<String, List<Task>> tasks, BufferedReader reader, PrintWriter writer) {
         this.in = reader;
         this.out = writer;
-        new TaskRun(this.out,this.in, tasks).run();
+        this.tasks = tasks;
+        new TaskRun(this.out,this.in, this.tasks).run();
     }
 
 }
