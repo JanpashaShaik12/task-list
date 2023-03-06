@@ -6,6 +6,10 @@ import java.io.InputStreamReader;
 import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintWriter;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,7 +22,7 @@ public final class ApplicationTest {
     public static final String PROMPT = "> ";
     private final PipedOutputStream inStream = new PipedOutputStream();
     private final PrintWriter inWriter = new PrintWriter(inStream, true);
-
+    private final Map<String, List<Task>> tasks = new HashMap<>();
     private final PipedInputStream outStream = new PipedInputStream();
     private final BufferedReader outReader = new BufferedReader(new InputStreamReader(outStream));
 
@@ -27,8 +31,8 @@ public final class ApplicationTest {
     public ApplicationTest() throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(new PipedInputStream(inStream)));
         PrintWriter out = new PrintWriter(new PipedOutputStream(outStream), true);
-        TaskList taskList = new TaskList(in, out);
-        applicationThread = new Thread(taskList);
+        TaskList taskList = new TaskList(tasks, in, out);
+        applicationThread = new Thread(taskList.toString());
     }
 
     @Before public void
